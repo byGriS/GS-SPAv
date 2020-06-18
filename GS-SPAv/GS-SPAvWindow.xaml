@@ -1,0 +1,213 @@
+﻿<Window x:Class="GS_SPAv.GS_SPAvWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GS_SPAv"
+        mc:Ignorable="d"
+        Title="GS_SPAv" 
+        Height="768"
+        Width="1366"
+        WindowState="Maximized"
+        Loaded="Window_Loaded">
+
+  <Window.Resources>
+    <Style TargetType="{x:Type DataGridRow}">
+      <Style.Setters>
+        <Setter Property="Background" Value="{Binding Path=Brush}"></Setter>
+      </Style.Setters>
+    </Style>
+    <ContextMenu  x:Key="RowMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+      <MenuItem Header="Закрыть сообщение"
+                Click="EventLog_Click"/>
+    </ContextMenu>
+    <Style x:Key="DefaultRowStyle" TargetType="{x:Type DataGridRow}">
+      <Setter Property="ContextMenu" Value="{StaticResource RowMenu}" />
+      <Setter Property="Background" Value="{Binding Path=Brush}"></Setter>
+    </Style>
+    <Style x:Key="MyButtonStyle" TargetType="Button">
+      <Setter Property="OverridesDefaultStyle" Value="True"/>
+      <Setter Property="Margin" Value="5"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border Name="border" 
+                            BorderThickness="1"
+                            Padding="4,2" 
+                            BorderBrush="DarkGray" 
+                            CornerRadius="3" 
+                            Background="{TemplateBinding Background}">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="border" Property="BorderBrush" Value="Black" />
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </Window.Resources>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="26"></RowDefinition>
+      <RowDefinition/>
+    </Grid.RowDefinitions>
+
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition Width="400"/>
+      </Grid.ColumnDefinitions>
+      <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+        <Menu HorizontalAlignment="Left" Background="{x:Null}"
+              Height="20">
+          <MenuItem Header="Начать работу" x:Name="btnStart" Click="Start_Click" Foreground="DarkRed" FontWeight="Bold"/>
+          <MenuItem Header="Архив" Click="Archive_Click"/>
+          <MenuItem x:Name="miWorkInfo" Header="Данные закачки" Click="WorkInfoSetting_Click" Visibility="Collapsed"/>
+          <MenuItem Header="Настройка связи" Click="Setting_Click"/>
+          <MenuItem Header="Настройка параметров" Click="SettingAlarm_Click"/>
+        </Menu>
+            <CheckBox Content="Только таблица" 
+                  x:Name="cbTable"
+                  VerticalAlignment="Center"
+                  Margin="3"
+                  IsChecked="True"
+                  Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+            <CheckBox Content="Звуковая сигн." 
+                  x:Name="cbSoundAlarm"
+                  VerticalAlignment="Center"
+                  Margin="3"
+                  Checked="cbSoundAlarm_Checked" Unchecked="cbSoundAlarm_Checked"/>
+            <Label Content="Громкость сигн.:" />
+            <Button Content="-"
+                Width="25"
+                Height="20"
+                Margin="2"
+                Padding="0 -4 0 0"
+                FontSize="18"
+                Click="VolumeDown_Click"/>
+            <Label x:Name="lVolume" Content="100" />
+            <Button Content="+"
+                Width="25"
+                Height="20"
+                Margin="2"
+                Padding="0 -4 0 0"
+                FontSize="18"
+                Click="VolumeUp_Click"/>
+      </StackPanel>
+      <StackPanel Grid.Column="1" 
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Right"
+                        Margin="10 0">
+        <CheckBox Content="Отправлять данные" 
+                  HorizontalAlignment="Right" VerticalAlignment="Center" 
+                  Margin="10 0"
+                  x:Name="cbIsSendWeb"
+                  Checked="cbIsSendWeb_Checked" Unchecked="cbIsSendWeb_Checked"/>
+        <Label x:Name="lServer" Content="Веб-сервер" HorizontalAlignment="Right"/>
+        <Canvas Grid.Column="1" x:Name="canvasWebWork" Width="26" Margin="2"/>
+        <Label x:Name="lInputGS" Content="ПЛК " HorizontalAlignment="Right"/>
+        <Canvas Grid.Column="1" x:Name="canvasInputGS" Width="26" Margin="2"/>
+        <Label x:Name="lInputCUDR" Content="КУДР" HorizontalAlignment="Right"/>
+        <Canvas Grid.Column="1" x:Name="canvasInputCUDR" Width="26" Margin="2"/>
+      </StackPanel>
+    </Grid>
+
+    <Grid Grid.Row="1" x:Name="gTableAndGraph" Visibility="Hidden">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="4*"/>
+          <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.6*"/>
+            <ColumnDefinition/>
+          </Grid.ColumnDefinitions>
+          <local:TableDataParamsView x:Name="tableDataParams" Grid.Column="0"/>
+          <local:TableStageView x:Name="tableStages" Grid.Column="1"/>
+        </Grid>
+        <Grid Grid.Row="2">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition/>
+          </Grid.RowDefinitions>
+          <Border BorderThickness="2" BorderBrush="#121212">
+            <Grid Background="#172657">
+              <Viewbox HorizontalAlignment="Left">
+                <Label Content="Уведомления" Foreground="#e8e8e8"/>
+              </Viewbox>
+            </Grid>
+          </Border>
+          <Border BorderThickness="2 0 2 2" BorderBrush="#121212" Grid.Row="1">
+            <DataGrid x:Name="eventLogsMini"
+                  AutoGenerateColumns="False" 
+                  CanUserDeleteRows="False"
+                  CanUserAddRows="False"
+                  SelectionMode="Single" 
+                  SelectionUnit="FullRow"
+                  IsReadOnly="True"
+                  RowHeaderWidth="20"
+                  CanUserSortColumns="True"
+                  RowStyle="{StaticResource DefaultRowStyle}">
+              <DataGrid.Columns>
+                <DataGridTextColumn 
+                  Header="Дата/время" 
+                  Width="1*" 
+                  Binding="{Binding Path=DateTime, StringFormat=\{0:dd.MM.yy HH:mm:ss\}}"/>
+                <DataGridTextColumn 
+                  Header="Сообщение" 
+                  Width="5*" 
+                  Binding="{Binding Text}"
+                  Foreground ="{Binding Color}"/>
+              </DataGrid.Columns>
+            </DataGrid>
+          </Border>
+        </Grid>
+      </Grid>
+      <Grid Grid.Column="1">
+        <Grid.RowDefinitions>
+          <RowDefinition/>
+          <RowDefinition/>
+          <RowDefinition/>
+        </Grid.RowDefinitions>
+        <local:GraphView x:Name="graph1" Grid.Row="0"/>
+        <local:GraphView x:Name="graph2" Grid.Row="1"/>
+        <local:GraphView x:Name="graph3" Grid.Row="2"/>
+      </Grid>
+    </Grid>
+
+    <Grid Grid.Row="1" x:Name="gTable">
+      <Grid Grid.Row="0">
+        <Grid.RowDefinitions>
+          <RowDefinition/>
+          <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="2*"/>
+          <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <local:TableDataParamsView x:Name="tableDataParams2" Grid.Column="0" IsOnlyTable="True"/>
+        <local:TableDataParamsView x:Name="tableDataParams3" Grid.Column="1" IsOnlyTable="True"/>
+        <StackPanel Orientation="Horizontal" 
+                    Grid.Row="1"
+                    VerticalAlignment="Center">
+          <Label Content="Текущий этап:" 
+                 FontSize="28"
+                 Margin="30 0"/>
+          <Label x:Name="lStage" Content="нет этапа"
+                 FontSize="28"
+                 Margin="20 0"/>
+        </StackPanel>
+      </Grid>
+    </Grid>
+
+  </Grid>
+</Window>

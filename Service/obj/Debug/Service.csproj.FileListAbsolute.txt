@@ -1,0 +1,14 @@
+C:\Users\GriS\source\repos\GS-SPAv\bin\Debug\Service.dll
+C:\Users\GriS\source\repos\GS-SPAv\bin\Debug\Service.pdb
+C:\Users\GriS\source\repos\Service\obj\Debug\Service.csprojAssemblyReference.cache
+C:\Users\GriS\source\repos\Service\obj\Debug\Service.Properties.Resources.resources
+C:\Users\GriS\source\repos\Service\obj\Debug\Service.csproj.GenerateResource.cache
+C:\Users\GriS\source\repos\Service\obj\Debug\Service.dll
+C:\Users\GriS\source\repos\Service\obj\Debug\Service.pdb
+c:\Users\GriS\source\repos\GS-SPAv\GS-SPAv\bin\Debug\Service.dll
+c:\Users\GriS\source\repos\GS-SPAv\GS-SPAv\bin\Debug\Service.pdb
+c:\Users\GriS\source\repos\GS-SPAv\Service\obj\Debug\Service.Properties.Resources.resources
+c:\Users\GriS\source\repos\GS-SPAv\Service\obj\Debug\Service.csproj.GenerateResource.Cache
+c:\Users\GriS\source\repos\GS-SPAv\Service\obj\Debug\Service.dll
+c:\Users\GriS\source\repos\GS-SPAv\Service\obj\Debug\Service.pdb
+C:\Users\GriS\source\repos\GS-SPAv\Service\obj\Debug\Service.csprojAssemblyReference.cache

@@ -1,0 +1,30 @@
+﻿<Window x:Class="GS_SPAv.ArchivePrintWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GS_SPAv"
+        mc:Ignorable="d"
+        Title="Печать графиков" Height="300" Width="300"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        >
+    <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition/>
+      <RowDefinition Height="36"/>
+    </Grid.RowDefinitions>
+    <StackPanel>
+      <CheckBox Content="Расходы и объемы" x:Name="cbFlow" Margin="6"/>
+      <CheckBox Content="Давления" x:Name="cbPress" Margin="6"/>
+      <CheckBox Content="Плотность/Температура" x:Name="cbRo" Margin="6"/>
+      <CheckBox Content="Параметры НД1" x:Name="cbND1" Margin="6"/>
+      <CheckBox Content="Параметры НД2" x:Name="cbND2" Margin="6"/>
+      <CheckBox Content="Параметры ДШ"  x:Name="cbScrew" Margin="6"/>
+    </StackPanel>
+    <StackPanel  Grid.Row="1" Background="Gray" Orientation="Horizontal" FlowDirection="RightToLeft">
+      <Button Content="Отмена" Padding="3" Click="Close_Click" Margin="3" Width="75"/>
+      <Button Content="Напечатать" Padding="3" Click="Print_Click" Margin="3" Width="75"/>
+    </StackPanel>
+  </Grid>
+</Window>

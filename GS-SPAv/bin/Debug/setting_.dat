@@ -1,0 +1,35 @@
+Расход (турбина)|0|0|0|255|128|Q1|True|м3/мин|True|True
+Объем (турбина)|0|0|64|0|0|V1|True|м3|False|False
+Расход э/м|0|0|128|0|255|Q2|False|м3/мин|False|False
+Объем э/м|0|0|128|128|0|V2|False|м3|False|False
+Давление 1|0|0|128|255|0|P1|True|кПа|False|False
+Давление 2|0|0|0|128|0|P2|True|атм|False|False
+Давление затруба|0|0|255|0|0|P3|False|атм|False|False
+Температура|0|0|128|128|128|T|True|С|False|False
+Плотность|0|0|0|128|255|po|False|кг/м3|False|False
+Концентрация НД1|0|10|255|128|64|Nnd1|False|%|True|True
+Объем НД1|0|0|248|102|14|Vnd1|False|л|False|False
+Концентрация НД2|0|0|128|128|255|Nnd2|False|%|False|False
+Объем НД2|0|0|0|0|64|Vnd2|False|л|False|False
+Концентрация ДШ|0|0|42|42|42|Nsh|False|%|False|False
+Масса ДШ|0|0|64|128|128|Msh|False|кг|False|False
+Расход НД1|0|0|128|64|0|Qnd1|False|л/ч|False|False
+Расход НД2|0|0|0|0|253|Qnd2|False|л/ч|False|False
+Расход ДШ|0|0|115|115|115|Qsh|False|кг/ч|False|False
+COM8
+9600
+8
+None
+One
+2
+COM8
+57600
+8
+None
+One
+3
+0
+False
+True
+False
+True

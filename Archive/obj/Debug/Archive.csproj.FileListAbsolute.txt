@@ -1,0 +1,16 @@
+C:\Users\GriS\source\repos\GS-SPAv\bin\Debug\Archive.dll
+C:\Users\GriS\source\repos\GS-SPAv\bin\Debug\Archive.pdb
+C:\Users\GriS\source\repos\Archive\obj\Debug\Archive.csprojAssemblyReference.cache
+C:\Users\GriS\source\repos\Archive\obj\Debug\Archive.Properties.Resources.resources
+C:\Users\GriS\source\repos\Archive\obj\Debug\Archive.csproj.GenerateResource.cache
+C:\Users\GriS\source\repos\Archive\obj\Debug\Archive.csproj.CopyComplete
+C:\Users\GriS\source\repos\Archive\obj\Debug\Archive.dll
+C:\Users\GriS\source\repos\Archive\obj\Debug\Archive.pdb
+c:\Users\GriS\source\repos\GS-SPAv\GS-SPAv\bin\Debug\Archive.dll
+c:\Users\GriS\source\repos\GS-SPAv\GS-SPAv\bin\Debug\Archive.pdb
+c:\Users\GriS\source\repos\GS-SPAv\Archive\obj\Debug\Archive.Properties.Resources.resources
+c:\Users\GriS\source\repos\GS-SPAv\Archive\obj\Debug\Archive.csproj.GenerateResource.Cache
+c:\Users\GriS\source\repos\GS-SPAv\Archive\obj\Debug\Archive.dll
+c:\Users\GriS\source\repos\GS-SPAv\Archive\obj\Debug\Archive.pdb
+C:\Users\GriS\source\repos\GS-SPAv\Archive\obj\Debug\Archive.csprojAssemblyReference.cache
+C:\Users\GriS\source\repos\GS-SPAv\Archive\obj\Debug\Archive.csproj.CopyComplete

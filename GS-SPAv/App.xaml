@@ -1,0 +1,9 @@
+﻿<Application x:Class="GS_SPAv.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:GS_SPAv"
+             StartupUri="GS-SPAvWindow.xaml">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>
