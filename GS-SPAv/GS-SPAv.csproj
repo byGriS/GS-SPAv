@@ -115,6 +115,7 @@
     <Compile Include="WorkInfoWindow.xaml.cs">
       <DependentUpon>WorkInfoWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WpbTrackerManipulator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GS-SPAvWindow.xaml.cs">

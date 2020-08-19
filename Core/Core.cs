@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace Core {
   public class Core {
-    public Setting Setting { get; set; } = new Setting();
+    public Setting Setting { get; private set; } = new Setting();
     private Timer TimerArchive = new Timer(1000);
     private Input.Work inputWork = null;
     public Archive.Archive Archive = null;
@@ -90,6 +90,11 @@ namespace Core {
       Archive.WriteADT();
       if (Setting.IsWEB) {
         SendToServerData();
+      }
+
+      if (Setting.ListStages.Count > 0) {
+        Setting.ListStages[Setting.ListStages.Count - 1].Capacity1End = Setting.GetParamByTitleSmall("V1").LastValue.Value;
+        Setting.ListStages[Setting.ListStages.Count - 1].Capacity2End = Setting.GetParamByTitleSmall("V2").LastValue.Value;
       }
     }
 

@@ -349,7 +349,7 @@ namespace Input {
 									ID = r.Next(int.MaxValue),
 									Text = stageTitle,
 									DateTime = DateTime.Now,
-									IsSecond = false
+									IsSecond = false,
 								});
 							}));
 						OnChangedState?.Invoke("GS", 1, "");

@@ -120,6 +120,9 @@ namespace GS_SPAv {
         graph2.AddStageAnnotation(Core.Setting.ListStages[Core.Setting.ListStages.Count - 1]);
         graph3.AddStageAnnotation(Core.Setting.ListStages[Core.Setting.ListStages.Count - 1]);
         lStage.Content = Core.Setting.ListStages[Core.Setting.ListStages.Count - 1].Text;
+
+        Core.Setting.ListStages[Core.Setting.ListStages.Count - 1].Capacity1Start = Core.Setting.GetParamByTitleSmall("V1").LastValue.Value;
+        Core.Setting.ListStages[Core.Setting.ListStages.Count - 1].Capacity2Start = Core.Setting.GetParamByTitleSmall("V2").LastValue.Value;
       }
     }
 

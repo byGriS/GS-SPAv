@@ -24,7 +24,7 @@ namespace GS_SPAv {
     private bool isNeedSave = false;
 
     private const int TextFontSize = 16;
-
+    
     public ArchiveWindow() {
       InitializeComponent();
     }
@@ -36,9 +36,13 @@ namespace GS_SPAv {
 
       controller.UnbindAll();
       controller.BindMouseDown(OxyMouseButton.Right, PlotCommands.PanAt);
-      controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PointsOnlyTrack);
       controller.BindMouseWheel(PlotCommands.ZoomWheel);
       controller.BindKeyDown(OxyKey.R, PlotCommands.Reset);
+
+      controller.BindMouseDown(OxyMouseButton.Left, new DelegatePlotCommand<OxyMouseDownEventArgs>(
+             (view, controller, args) =>
+                controller.AddMouseManipulator(view, new WpbTrackerManipulator(view), args)));
+
       plotter.Controller = controller;
     }
 
@@ -189,6 +193,7 @@ namespace GS_SPAv {
       };
       axeX.MajorGridlineStyle = LineStyle.Solid;
       axeX.MajorGridlineThickness = 1;
+      axeX.AxisChanged += AxeX_AxisChanged;
       model.Axes.Add(axeX);
       bool first = true;
       int indexTier = 0;
@@ -230,7 +235,6 @@ namespace GS_SPAv {
 
 
       plotter.Model = model;
-      //plotter.Model.PlotMargins = new OxyThickness(150, double.NaN, double.NaN, double.NaN);
       WorkInfo wi = (WorkInfo)lvArchives.SelectedItem;
       model.Title = wi.Builder + "\nМесторождение: " + wi.Field + ", скважина:" + wi.Well + "\nНачало: " + DateTime.Parse(wi.Start).ToString() + "\nКонец: " + DateTimeAxis.ToDateTime(model.Axes[0].ActualMaximum).ToString();
       model.TitleFontWeight = 1;
@@ -242,21 +246,12 @@ namespace GS_SPAv {
       model.MouseDown += Model_MouseDown;
       model.MouseMove += Model_MouseMove;
 
-      /*for (int i = 0; i < stages.Count; i++) {
-        if (stages[i].IsChecked && !stages[i].IsSecond) {
-          LineAnnotation anno = new LineAnnotation();
-          anno.Text = stages[i].Text;
-          anno.X = DateTimeAxis.ToDouble(stages[i].DateTime);
-          anno.Type = LineAnnotationType.Vertical;
-          anno.Color = OxyColors.Green;
-          anno.MouseDown += Stage_MouseDown;
-          anno.FontSize = TextFontSize;
-          anno.TextColor = OxyColors.Black;
-          anno.Tag = stages[i].ID;
-          model.Annotations.Add(anno);
-        }
-      }*/
+ 
       RenderAnno();
+    }
+
+    private void AxeX_AxisChanged(object sender, AxisChangedEventArgs e) {
+      RenderTextAnnotaions();
     }
 
     private void AxeY_AxisChanged(object sender, AxisChangedEventArgs e) {
@@ -442,7 +437,7 @@ namespace GS_SPAv {
             IsChecked = true
           });
         }
-      }
+      } 
     }
 
     private double RoundToSecond(double input) {
@@ -452,19 +447,13 @@ namespace GS_SPAv {
     }
 
     private void Model_MouseMove(object sender, OxyMouseEventArgs e) {
+      Axis X_Axis = model.Axes[0], Y_Axis = model.Axes[1];
       if (ranging) {
         PlotModel plot = model as PlotModel;
         ElementCollection<Axis> axisList = plot.Axes;
-        Axis X_Axis = null, Y_Axis = null;
-        foreach (Axis ax in axisList) {
-          if (ax.Position == AxisPosition.Bottom)
-            X_Axis = ax;
-          else if (ax.Position == AxisPosition.Left)
-            Y_Axis = ax;
-        }
         RangeMark.MaximumX = Axis.InverseTransform(e.Position, X_Axis, Y_Axis).X;
-        plotter.InvalidatePlot(false);
       }
+      plotter.InvalidatePlot(false);
     }
 
     private void Stage_MouseDown(object sender, OxyMouseDownEventArgs e) {

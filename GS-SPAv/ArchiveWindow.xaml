@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GS_SPAv"
-        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:oxy="http://oxyplot.org/wpf" 
         mc:Ignorable="d"
         Title="Архив" Height="728" Width="1366"
         WindowStartupLocation="CenterScreen"
@@ -173,7 +173,26 @@
                 />
               </Border>
             </StackPanel>
-            <oxy:PlotView Grid.Row="1" x:Name="plotter"/>
+            <oxy:PlotView Grid.Row="1" x:Name="plotter">
+              <oxy:PlotView.DefaultTrackerTemplate>
+                <ControlTemplate>
+                  <oxy:TrackerControl Position="{Binding Position}" 
+                                      LineExtents="{Binding PlotModel.PlotArea}"
+                                      BorderBrush="Black" BorderThickness="1" 
+                                      HorizontalLineVisibility="Hidden" >
+                    <oxy:TrackerControl.Content>
+                      <Grid Margin="4,0,4,7">
+                        <Grid.RowDefinitions>
+                          <RowDefinition/>
+                          <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="{Binding ValueString[0]}" Margin="4,2"/>
+                      </Grid>
+                    </oxy:TrackerControl.Content>
+                  </oxy:TrackerControl>
+                </ControlTemplate>
+              </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView>
           </Grid>
         </Grid>
       </Grid>
