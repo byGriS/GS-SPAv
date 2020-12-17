@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlarmMark.cs" />
+    <Compile Include="AnyParam.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DataParam.cs" />
     <Compile Include="EventLog.cs" />

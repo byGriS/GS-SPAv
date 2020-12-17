@@ -14,3 +14,4 @@ c:\Users\GriS\source\repos\GS-SPAv\Archive\obj\Debug\Archive.dll
 c:\Users\GriS\source\repos\GS-SPAv\Archive\obj\Debug\Archive.pdb
 C:\Users\GriS\source\repos\GS-SPAv\Archive\obj\Debug\Archive.csprojAssemblyReference.cache
 C:\Users\GriS\source\repos\GS-SPAv\Archive\obj\Debug\Archive.csproj.CopyComplete
+C:\Users\GriS\source\repos\GS-SPAv\Archive\obj\Debug\Archive.csproj.CoreCompileInputs.cache

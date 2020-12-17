@@ -599,5 +599,11 @@ namespace GS_SPAv {
         }
       }
     }
+
+    private void Import_Click(object sender, RoutedEventArgs e) {
+      ImportWindow iw = new ImportWindow(GS_SPA.Core);
+      iw.Owner = this;
+      iw.ShowDialog();
+    }
   }  
 }

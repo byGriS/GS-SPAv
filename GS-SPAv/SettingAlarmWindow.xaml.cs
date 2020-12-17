@@ -27,6 +27,12 @@ namespace GS_SPAv {
         dataParams[dataParams.Count - 1].IsBlock = !working;
       }
       dgParamSetting.ItemsSource = dataParams;
+      cbSelectFlow.Items.Add(GS_SPA.Core.Setting.inputGS.InputParams[0].Param.Title.Split(',')[0]);
+      cbSelectFlow.Items.Add(GS_SPA.Core.Setting.inputGS.InputParams[2].Param.Title.Split(',')[0]);
+      if (GS_SPA.Core.Setting.firstFlow.Value == "1")
+        cbSelectFlow.SelectedIndex = 0;
+      else
+        cbSelectFlow.SelectedIndex = 1;
     }
 
     private void ColorChange_Click(object sender, RoutedEventArgs e) {
@@ -56,6 +62,11 @@ namespace GS_SPAv {
         GS_SPA.Core.Setting.ListDataParams[i].IsAlarmColor = dataParams[i].IsAlarmColor;
         GS_SPA.Core.Setting.ListDataParams[i].IsAlarmSound = dataParams[i].IsAlarmSound;
       }
+      if (cbSelectFlow.SelectedIndex == 0)
+        GS_SPA.Core.Setting.firstFlow.Value = "1";
+      else
+        GS_SPA.Core.Setting.firstFlow.Value = "0";
+
       GS_SPA.Core.Setting.SaveSetting();
       this.Close();
     }

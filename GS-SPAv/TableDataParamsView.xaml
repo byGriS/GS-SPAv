@@ -11,7 +11,7 @@
     <local:WeightAlarmText x:Key="InAlarmToWeight"></local:WeightAlarmText>
     <Style x:Key="tbStyleParam" TargetType="TextBlock">
       <Setter Property="FontSize" Value="18"/>
-      <Setter Property="Width" Value="300"/>
+      <Setter Property="Width" Value="245"/>
       <Setter Property="Margin" Value="0 0"/>
     </Style>
     <Style x:Key="tbStyleValue" TargetType="TextBlock">
@@ -27,12 +27,12 @@
         <DataTemplate>
           <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding Path=Title}" Style="{DynamicResource tbStyleParam}"/>
-            <TextBlock Grid.Column="1" Text="{Binding Path=LastValue.ValueString}" Style ="{DynamicResource tbStyleValue}"
+            <TextBlock Text="{Binding Path=LastValue.ValueString}" Style ="{DynamicResource tbStyleValue}"
                        HorizontalAlignment="Center"
                        Tag="{Binding Path=InAlarm}"
                        Foreground="{Binding Path=InAlarmColor, Converter={StaticResource InAlarmToColor}}"
                        FontWeight="{Binding Path=InAlarmColor, Converter={StaticResource InAlarmToWeight}}"
-                       Width="120"/>
+                       />
           </StackPanel>
         </DataTemplate>
       </ListView.ItemTemplate>

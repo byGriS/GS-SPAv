@@ -10,5 +10,6 @@
     public string Company { get; set; }
     public string Start { get; set; }
     public bool Blocked { get; set; }
+    public string StartEnd { get; set; }
   }
 }

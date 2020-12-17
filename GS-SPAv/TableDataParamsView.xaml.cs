@@ -2,7 +2,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -34,12 +33,12 @@ namespace GS_SPAv {
       set {
         isOnlyTable = value;
         if (isOnlyTable) {
-          { 
-          Style style = this.FindResource("tbStyleParam") as Style;
-          Setter setter = (Setter)style.Setters[0];
-          setter.Value = 32.0;
-          Setter setter2 = (Setter)style.Setters[1];
-          setter2.Value = 500.0;
+          {
+            Style style = this.FindResource("tbStyleParam") as Style;
+            Setter setter = (Setter)style.Setters[0];
+            setter.Value = 32.0;
+            Setter setter2 = (Setter)style.Setters[1];
+            setter2.Value = 500.0;
             Setter setter3 = (Setter)style.Setters[2];
             setter3.Value = new Thickness(0, 5, 0, 5);
           }
@@ -52,15 +51,15 @@ namespace GS_SPAv {
           }
 
 
-        } 
+        }
       }
     }
   }
 
   public class ColorAlarmText : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-      if ((bool)value) 
-        return new SolidColorBrush(Colors.Red);      
+      if ((bool)value)
+        return new SolidColorBrush(Colors.Red);
       return new SolidColorBrush(Colors.Black);
     }
 
@@ -71,8 +70,8 @@ namespace GS_SPAv {
 
   public class WeightAlarmText : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-      if ((bool)value) 
-        return FontWeight.FromOpenTypeWeight(700);      
+      if ((bool)value)
+        return FontWeight.FromOpenTypeWeight(700);
       return FontWeight.FromOpenTypeWeight(400);
     }
 

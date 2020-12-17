@@ -55,6 +55,7 @@ namespace Core {
     public int intervalReadGS = 3;
     public bool isTotalSoundAlarm = true;
     public int volumeSoundAlarm = 100;
+    public AnyParam firstFlow = new AnyParam { Value = "1" };
 
     public DataParam GetParamByTitle(string title) {
       foreach (DataParam param in ListDataParams)
@@ -104,7 +105,8 @@ namespace Core {
       save += IsWEB.ToString() + "\r\n";
       save += isTable.ToString() + "\r\n";
       save += isTotalSoundAlarm.ToString() + "\r\n";
-      save += volumeSoundAlarm.ToString();
+      save += volumeSoundAlarm.ToString() + "\r\n";
+      save += firstFlow.ToString();
       File.WriteAllText("setting.dat", save);
     }
 
@@ -156,6 +158,9 @@ namespace Core {
         try {
           isTotalSoundAlarm = Convert.ToBoolean(lines[index++]);
           volumeSoundAlarm = Convert.ToInt32(lines[index++]);
+        } catch { }
+        try {
+          firstFlow = new AnyParam() { Value = lines[index++] };
         } catch { }
       }
       inputCUDR = new Input.Input { SerialPort = portCUDR };

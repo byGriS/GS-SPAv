@@ -13,6 +13,7 @@ namespace Archive {
 
     public Archive(ObservableCollection<DataParam> listDataParams) {
       ListDataParams = listDataParams;
+      System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
       //CreateHead();
     }
 
@@ -55,7 +56,27 @@ namespace Archive {
 
       //string[] filesName = new string[files.Length];
       for (int i = files.Length-1; i >= 0; i--) {
-        string[] info = File.ReadAllLines(files[files.Length - 1-i].FullName)[0].Split('|');
+        string[] allLines = File.ReadAllLines(files[files.Length - 1 - i].FullName);
+        string[] info = allLines[0].Split('|');
+        string startEnd = "";
+        try {
+          DateTime dtStart = DateTime.Parse(info[6]);
+          string stringEnd = allLines[allLines.Length - 1].Split(';')[0];
+          DateTime dtEnd = DateTime.Parse(stringEnd);
+
+          if (dtStart.Day == dtEnd.Day) {
+            startEnd += dtStart.ToString("HH:mm");
+            startEnd += "-";
+            startEnd += dtEnd.ToString("HH:mm dd/MM/yy");
+          } else {
+            startEnd += dtStart.ToString("HH:mm dd/MM/yy");
+            startEnd += "-";
+            startEnd += dtEnd.ToString("HH:mm dd/MM/yy");
+          }
+        } catch {
+          startEnd = info[6];
+        }
+
         result[i] = new WorkInfo {
           PhoneNumber = info[0],
           Well = info[1],
@@ -63,7 +84,8 @@ namespace Archive {
           Builder = info[3],
           FIO = info[4],
           NumPKRS = info[5],
-          Start = info[6]
+          Start = info[6],
+          StartEnd = startEnd,
         };
       }
       
@@ -80,7 +102,11 @@ namespace Archive {
         string[] data = lines[line].Split(';');
         for (int i = 1; i < data.Length; i++) {
           if (i < dataParams.Count + 1) {
-            dataParams[i - 1].Points.Add(new DataParamPoint { DateTime = Convert.ToDateTime(data[0]), Value = Convert.ToSingle(data[i]) });
+            try {
+              dataParams[i - 1].Points.Add(new DataParamPoint { DateTime = Convert.ToDateTime(data[0]), Value = Convert.ToSingle(data[i]) });
+            } catch {
+              dataParams[i - 1].Points.Add(new DataParamPoint { DateTime = Convert.ToDateTime(data[0]), Value = 0 });
+            }
           } else {
             if (data[i] != "") {
               string[] stageData = data[i].Split('|');

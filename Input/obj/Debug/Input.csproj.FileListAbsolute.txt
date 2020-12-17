@@ -22,3 +22,4 @@ c:\Users\GriS\Downloads\GS-SPAv\Input\obj\Debug\Input.csproj.GenerateResource.ca
 c:\Users\GriS\Downloads\GS-SPAv\Input\obj\Debug\Input.csproj.CopyComplete
 c:\Users\GriS\Downloads\GS-SPAv\Input\obj\Debug\Input.dll
 c:\Users\GriS\Downloads\GS-SPAv\Input\obj\Debug\Input.pdb
+C:\Users\GriS\source\repos\GS-SPAv\Input\obj\Debug\Input.csproj.CoreCompileInputs.cache

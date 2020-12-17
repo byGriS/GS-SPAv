@@ -116,7 +116,7 @@
       </StackPanel>
     </Grid>
 
-    <Grid Grid.Row="1" x:Name="gTableAndGraph" Visibility="Hidden">
+    <Grid Grid.Row="1" x:Name="gTableAndGraph" Visibility="Visible">
       <Grid.ColumnDefinitions>
         <ColumnDefinition />
         <ColumnDefinition />
@@ -127,12 +127,17 @@
           <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="1.1*"/>
+            <RowDefinition/>
+          </Grid.RowDefinitions>
           <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.6*"/>
+            <ColumnDefinition/>
             <ColumnDefinition/>
           </Grid.ColumnDefinitions>
-          <local:TableDataParamsView x:Name="tableDataParams" Grid.Column="0"/>
-          <local:TableStageView x:Name="tableStages" Grid.Column="1"/>
+          <local:TableDataParamsView x:Name="tableDataParams" Grid.Row="0"/>
+          <local:TableDataParamsView x:Name="tableDataParams4" Grid.Row="0" Grid.Column="1"/>
+          <local:TableStageView x:Name="tableStages" Grid.Row="1" Grid.ColumnSpan="2"/>
         </Grid>
         <Grid Grid.Row="2">
           <Grid.RowDefinitions>
@@ -184,7 +189,7 @@
       </Grid>
     </Grid>
 
-    <Grid Grid.Row="1" x:Name="gTable">
+    <Grid Grid.Row="1" x:Name="gTable" Visibility="Hidden">
       <Grid Grid.Row="0">
         <Grid.RowDefinitions>
           <RowDefinition/>

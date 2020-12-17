@@ -18,8 +18,9 @@
       <Menu HorizontalAlignment="Left" Background="{x:Null}">
           <MenuItem Header="Сохранить" Click="Save_Click"/>
           <MenuItem Header="Сохранить график" Click="SaveGraph_Click"/>
-          <MenuItem Header="Экспорт в Excel" Click="Report_Click"/>
-          <!--<MenuItem Header="Печать графиков" Click="PrintGraph_Click"/>-->
+        <MenuItem Header="Экспорт в Excel" Click="Report_Click"/>
+        <MenuItem Header="Выгрузка файлов" Click="Import_Click"/>
+        <!--<MenuItem Header="Печать графиков" Click="PrintGraph_Click"/>-->
       </Menu>
     </Grid>
 
@@ -50,7 +51,7 @@
               <ListView.View>
                 <GridView>
                   <GridViewColumn DisplayMemberBinding="{Binding Path=Well}" Width="150">Скважина</GridViewColumn>
-                  <GridViewColumn DisplayMemberBinding="{Binding Path=Start}" Width="150">Начало закачки</GridViewColumn>
+                  <GridViewColumn DisplayMemberBinding="{Binding Path=StartEnd}" Width="150">Дата/время</GridViewColumn>
                 </GridView>
               </ListView.View>
             </ListView>

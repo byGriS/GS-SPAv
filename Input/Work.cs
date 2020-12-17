@@ -17,6 +17,7 @@ namespace Input {
 		private ObservableCollection<Stage> ListStages;
 		private bool isCUDR, isGS;
 		private bool GSerror = false;
+		private AnyParam firstFlow;
 
 		public delegate void ChangedState(string source, int state, string error);
 		public event ChangedState OnChangedState;
@@ -39,11 +40,12 @@ namespace Input {
 			TimerSecond.Elapsed += TimerSecond_Elapsed;
 		}
 
-		public void Start(bool isCUDR, bool isGS, int intervalReadGS, int intervalReadCUDR) {
+		public void Start(bool isCUDR, bool isGS, int intervalReadGS, int intervalReadCUDR, AnyParam firstFlow) {
 			this.isCUDR = isCUDR;
 			this.isGS = isGS;
 			this.intervalReadGS = intervalReadGS;
 			this.intervalReadCUDR = intervalReadCUDR;
+			this.firstFlow = firstFlow;
 
 			if (isCUDR) {
 				inputCUDR.Master = new ModbusFactory().CreateRtuMaster(new SerialPortAdapter(inputCUDR.SerialPort));
@@ -114,12 +116,12 @@ namespace Input {
 				switch (inputCUDR.InputParams[i].TypeParam) {
 					case TypeParam.BIT:
 					case TypeParam.WORD:
-						numRegisters = 1;
-						break;
+					numRegisters = 1;
+					break;
 					case TypeParam.DWORD:
 					case TypeParam.FLOAT:
-						numRegisters = 2;
-						break;
+					numRegisters = 2;
+					break;
 				}
 
 				#region определение кол-во читаемых регистров
@@ -130,18 +132,18 @@ namespace Input {
 						switch (inputCUDR.InputParams[i].TypeParam) {
 							case TypeParam.BIT:
 							case TypeParam.WORD:
-								if (inputCUDR.InputParams[j].Address - (inputCUDR.InputParams[i].Address + (countRegister - 1) * 1) == 1)
-									countRegister++;
-								else
-									j = int.MaxValue;
-								break;
+							if (inputCUDR.InputParams[j].Address - (inputCUDR.InputParams[i].Address + (countRegister - 1) * 1) == 1)
+								countRegister++;
+							else
+								j = int.MaxValue;
+							break;
 							case TypeParam.DWORD:
 							case TypeParam.FLOAT:
-								if (inputCUDR.InputParams[j].Address - (inputCUDR.InputParams[i].Address + (countRegister - 1) * 2) == 2)
-									countRegister++;
-								else
-									j = int.MaxValue;
-								break;
+							if (inputCUDR.InputParams[j].Address - (inputCUDR.InputParams[i].Address + (countRegister - 1) * 2) == 2)
+								countRegister++;
+							else
+								j = int.MaxValue;
+							break;
 						}
 					} else
 						break;
@@ -173,122 +175,107 @@ namespace Input {
 				#region преобразование прочитанных регистров
 				switch (inputCUDR.InputParams[i].TypeParam) {
 					case TypeParam.WORD:
-						for (int r = 0; r < registers.Length; r++) {
-							Int16 int16value = BitConverter.ToInt16(new byte[] {
+					for (int r = 0; r < registers.Length; r++) {
+						Int16 int16value = BitConverter.ToInt16(new byte[] {
 										BitConverter.GetBytes(registers[r])[0],
 										BitConverter.GetBytes(registers[r])[1] },
-								0);
-							inputCUDR.InputParams[i++].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = int16value });
-						}
-						break;
+							0);
+						inputCUDR.InputParams[i++].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = int16value });
+					}
+					break;
 					case TypeParam.DWORD:
-						for (int r = 0; r < registers.Length; r += 2) {
-							int intValue = BitConverter.ToInt32(new byte[] {
+					for (int r = 0; r < registers.Length; r += 2) {
+						int intValue = BitConverter.ToInt32(new byte[] {
 										BitConverter.GetBytes(registers[r])[0],
 										BitConverter.GetBytes(registers[r])[1],
 										BitConverter.GetBytes(registers[r+1])[0],
 										BitConverter.GetBytes(registers[r+1])[1]},
-								0);
-							inputCUDR.InputParams[i++].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = intValue });
-						}
-						break;
+							0);
+						inputCUDR.InputParams[i++].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = intValue });
+					}
+					break;
 					case TypeParam.FLOAT:
-						for (int r = 0; r < registers.Length; r += 2) {
-							float floatData = BitConverter.ToSingle(new byte[] {
+					for (int r = 0; r < registers.Length; r += 2) {
+						float floatData = BitConverter.ToSingle(new byte[] {
 										BitConverter.GetBytes(registers[r])[0],
 										BitConverter.GetBytes(registers[r])[1],
 										BitConverter.GetBytes(registers[r+1])[0],
 										BitConverter.GetBytes(registers[r+1])[1]},
-								0);
-							inputCUDR.InputParams[i].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = inputCUDR.InputParams[i].Param.CalcValue(floatData, true) });
-							i++;
-						}
-						break;
+							0);
+						inputCUDR.InputParams[i].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = inputCUDR.InputParams[i].Param.CalcValue(floatData, true) });
+						i++;
+					}
+					break;
 				}
 				#endregion
 
 			}
 
-			if (inputCUDR.InputParams[1].Param.Points.Count <= 1) {
-				inputCUDR.InputParams[6].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = 0 });
-				inputCUDR.InputParams[0].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = 0 });
+			if (inputCUDR.InputParams[1].Param.Points.Count <= 1) { // если 0 или 1 точка
+				inputCUDR.InputParams[6].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = 0 }); // расход НД1
+				inputCUDR.InputParams[0].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = 0 }); // концентрация НД1
+
+				inputCUDR.InputParams[7].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = 0 }); // расход НД2
+				inputCUDR.InputParams[2].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = 0 }); // концентрация НД2
+
+				inputCUDR.InputParams[8].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = 0 }); //расход ДШ
+				inputCUDR.InputParams[4].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = 0 }); // концентрация ДШ
+
 			} else {
-				inputCUDR.InputParams[6].Param.Points.Add(new Service.DataParamPoint {
+				inputCUDR.InputParams[6].Param.Points.Add(new Service.DataParamPoint {// Расход НД1
 					DateTime = DateTime.Now,
 					Value = (inputCUDR.InputParams[1].Param.Points[inputCUDR.InputParams[1].Param.Points.Count - 1].Value -
 						inputCUDR.InputParams[1].Param.Points[inputCUDR.InputParams[1].Param.Points.Count - 2].Value) * (3600 / intervalReadCUDR)
 				});
-				if (inputGS.InputParams[0].Param.Points.Count > 0) {
-					inputCUDR.InputParams[0].Param.Points.Add(new Service.DataParamPoint {
-						DateTime = DateTime.Now,
-						Value = (inputCUDR.InputParams[6].Param.Points[inputCUDR.InputParams[6].Param.Points.Count - 1].Value /
-						inputGS.InputParams[0].Param.GetFlow() * (float)100)
-					});
-				} else {
-					if (inputGS.InputParams[2].Param.Points.Count > 0) {
-						inputCUDR.InputParams[0].Param.Points.Add(new Service.DataParamPoint {
-							DateTime = DateTime.Now,
-							Value = (inputCUDR.InputParams[6].Param.Points[inputCUDR.InputParams[6].Param.Points.Count - 1].Value /
-							//inputGS.InputParams[2].Param.Points[inputGS.InputParams[2].Param.Points.Count - 1].Value)
-							inputGS.InputParams[2].Param.GetFlow() * (float)100)
-						});
-					} else {
-						inputCUDR.InputParams[0].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = 0 });
-					}
-				}
-			}
-
-			if (inputCUDR.InputParams[3].Param.Points.Count <= 1) {
-				inputCUDR.InputParams[7].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = 0 });
-				inputCUDR.InputParams[2].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = 0 });
-			} else {
-				inputCUDR.InputParams[7].Param.Points.Add(new Service.DataParamPoint {
+				inputCUDR.InputParams[7].Param.Points.Add(new Service.DataParamPoint { // расход НД2
 					DateTime = DateTime.Now,
 					Value = (inputCUDR.InputParams[3].Param.Points[inputCUDR.InputParams[3].Param.Points.Count - 1].Value -
 						inputCUDR.InputParams[3].Param.Points[inputCUDR.InputParams[3].Param.Points.Count - 2].Value) * (3600 / intervalReadCUDR)
 				});
-				if (inputGS.InputParams[0].Param.Points.Count > 0) {
-					inputCUDR.InputParams[2].Param.Points.Add(new Service.DataParamPoint {
-						DateTime = DateTime.Now,
-						Value = (inputCUDR.InputParams[7].Param.Points[inputCUDR.InputParams[7].Param.Points.Count - 1].Value /
-						inputGS.InputParams[0].Param.GetFlow() * (float)100)
-					});
-				} else {
-					if (inputGS.InputParams[2].Param.Points.Count > 0) {
-						inputCUDR.InputParams[2].Param.Points.Add(new Service.DataParamPoint {
-							DateTime = DateTime.Now,
-							Value = (inputCUDR.InputParams[7].Param.Points[inputCUDR.InputParams[7].Param.Points.Count - 1].Value /
-							inputGS.InputParams[2].Param.GetFlow() * (float)100)
-						});
-					} else {
-						inputCUDR.InputParams[2].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = 0 });
-					}
-				}
-			}
-
-			if (inputCUDR.InputParams[5].Param.Points.Count <= 1) {
-				inputCUDR.InputParams[8].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = 0 });
-				inputCUDR.InputParams[4].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = 0 });
-			} else {
-				inputCUDR.InputParams[8].Param.Points.Add(new Service.DataParamPoint {
+				inputCUDR.InputParams[8].Param.Points.Add(new Service.DataParamPoint { //расход ДШ
 					DateTime = DateTime.Now,
 					Value = (inputCUDR.InputParams[5].Param.Points[inputCUDR.InputParams[5].Param.Points.Count - 1].Value -
 						inputCUDR.InputParams[5].Param.Points[inputCUDR.InputParams[5].Param.Points.Count - 2].Value) * (3600 / intervalReadCUDR)
 				});
-				if (inputGS.InputParams[0].Param.Points.Count > 0) {
-					inputCUDR.InputParams[4].Param.Points.Add(new Service.DataParamPoint {
+
+				//если есть показания расхода и этот расход больше нуля
+				//if (inputGS.InputParams[0].Param.Points.Count > 0 && inputGS.InputParams[0].Param.LastValue.Value > 0.01 ) {
+				if (firstFlow.Value == "1") {
+					inputCUDR.InputParams[0].Param.Points.Add(new Service.DataParamPoint {// концентрация НД1
+						DateTime = DateTime.Now,
+						Value = (inputCUDR.InputParams[6].Param.Points[inputCUDR.InputParams[6].Param.Points.Count - 1].Value /
+						inputGS.InputParams[0].Param.GetFlow() * (float)100)
+					});
+					inputCUDR.InputParams[2].Param.Points.Add(new Service.DataParamPoint { // концентрация НД2
+						DateTime = DateTime.Now,
+						Value = (inputCUDR.InputParams[7].Param.Points[inputCUDR.InputParams[7].Param.Points.Count - 1].Value /
+						inputGS.InputParams[0].Param.GetFlow() * (float)100)
+					});
+					inputCUDR.InputParams[4].Param.Points.Add(new Service.DataParamPoint { // концентрация ДШ
 						DateTime = DateTime.Now,
 						Value = (inputCUDR.InputParams[8].Param.Points[inputCUDR.InputParams[8].Param.Points.Count - 1].Value /
 						inputGS.InputParams[0].Param.GetFlow() * (float)100)
 					});
 				} else {
-					if (inputGS.InputParams[2].Param.Points.Count > 0) {
-						inputCUDR.InputParams[4].Param.Points.Add(new Service.DataParamPoint {
+					if (inputGS.InputParams[2].Param.Points.Count > 0 && inputGS.InputParams[2].Param.LastValue.Value > 0.01) {
+						inputCUDR.InputParams[0].Param.Points.Add(new Service.DataParamPoint {// концентрация НД1
+							DateTime = DateTime.Now,
+							Value = (inputCUDR.InputParams[6].Param.Points[inputCUDR.InputParams[6].Param.Points.Count - 1].Value /
+							inputGS.InputParams[2].Param.GetFlow() * (float)100)
+						});
+						inputCUDR.InputParams[2].Param.Points.Add(new Service.DataParamPoint {// концентрация НД2
+							DateTime = DateTime.Now,
+							Value = (inputCUDR.InputParams[7].Param.Points[inputCUDR.InputParams[7].Param.Points.Count - 1].Value /
+							inputGS.InputParams[2].Param.GetFlow() * (float)100)
+						});
+						inputCUDR.InputParams[4].Param.Points.Add(new Service.DataParamPoint {// концентрация ДШ
 							DateTime = DateTime.Now,
 							Value = (inputCUDR.InputParams[8].Param.Points[inputCUDR.InputParams[8].Param.Points.Count - 1].Value /
 							inputGS.InputParams[2].Param.GetFlow() * (float)100)
 						});
 					} else {
+						inputCUDR.InputParams[0].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = 0 });
+						inputCUDR.InputParams[2].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = 0 });
 						inputCUDR.InputParams[4].Param.Points.Add(new Service.DataParamPoint { DateTime = DateTime.Now, Value = 0 });
 					}
 				}
@@ -378,10 +365,10 @@ namespace Input {
 						string result = BitConverter.ToString(bufferInput);
 						System.IO.File.AppendAllText(path, DateTime.Now + ";" + result + "\r\n", System.Text.Encoding.UTF8);
 					}
-					
+
 					if (addLog) {
 						string path = Constants.ENVPATH + "logfile.txt";
-						string result = BitConverter.ToString(bufferInput);						
+						string result = BitConverter.ToString(bufferInput);
 						System.IO.File.AppendAllText(path, DateTime.Now + ";" + result + "\r\n", System.Text.Encoding.UTF8);
 					}
 					bufferInput = new byte[0];
@@ -400,7 +387,7 @@ namespace Input {
 
 		public bool CheckCRC(byte[] input) {
 			byte[] inputWithoutCRC = new byte[input.Length - 2];
-			for(int i = 0; i < input.Length - 2; i++) {
+			for (int i = 0; i < input.Length - 2; i++) {
 				inputWithoutCRC[i] = input[i];
 			}
 			byte[] crc = ModbusCRC16Calc(inputWithoutCRC);

@@ -38,7 +38,7 @@ namespace Core {
       if (Setting.IsWEB){
         SendToServerStart(Setting.WorkInfo);
       }
-      inputWork.Start(Setting.IsCUDR, Setting.IsGS, Setting.intervalReadGS, Setting.intervalReadCUDR);
+      inputWork.Start(Setting.IsCUDR, Setting.IsGS, Setting.intervalReadGS, Setting.intervalReadCUDR, Setting.firstFlow);
       TimerArchive.Start();
       countStages = Setting.ListStages.Count;
     }
@@ -95,6 +95,8 @@ namespace Core {
       if (Setting.ListStages.Count > 0) {
         Setting.ListStages[Setting.ListStages.Count - 1].Capacity1End = Setting.GetParamByTitleSmall("V1").LastValue.Value;
         Setting.ListStages[Setting.ListStages.Count - 1].Capacity2End = Setting.GetParamByTitleSmall("V2").LastValue.Value;
+        if (Setting.ListStages[Setting.ListStages.Count - 1].MaxPress < Setting.GetParamByTitleSmall("P3").LastValue.Value)
+        Setting.ListStages[Setting.ListStages.Count - 1].MaxPress = Setting.GetParamByTitleSmall("P3").LastValue.Value;
       }
     }
 

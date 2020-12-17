@@ -14,6 +14,9 @@ namespace Service {
     public delegate void ChangeValue(DataParam param);
     public event ChangeValue OnChangeValue;
 
+    public delegate void ChangeTitle(DataParam param);
+    public event ChangeTitle OnChangeTitle;
+
     public DataParam() {
       Points.CollectionChanged += Points_CollectionChanged;
     }
@@ -60,6 +63,7 @@ namespace Service {
       set {
         this.title = value;
         OnPropertyChanged("Title");
+        OnChangeTitle?.Invoke(this);
       }
     }
 
@@ -70,6 +74,7 @@ namespace Service {
         unit = value;
         OnPropertyChanged("Unit");
         OnPropertyChanged("Title");
+        OnChangeTitle?.Invoke(this);
       }
     }
 

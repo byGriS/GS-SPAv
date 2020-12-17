@@ -42,6 +42,18 @@
                     Header="V(турб.)" 
                     Width="1.5*" 
                     Binding="{Binding StringFormat=0.###, Path=Capacity1}"/>
+          <DataGridTextColumn 
+                    Header="Pmax" 
+                    Width="1.5*" 
+                    Binding="{Binding StringFormat=0.###, Path=MaxPress}"/>
+          <DataGridTextColumn 
+                    Header="Начало" 
+                    Width="1.5*" 
+                    Binding="{Binding StringFormat=0.###, Path=Start}"/>
+          <DataGridTextColumn 
+                    Header="Окончан." 
+                    Width="1.5*" 
+                    Binding="{Binding StringFormat=0.###, Path=End}"/>
         </DataGrid.Columns>
       </DataGrid>
     </Grid>

@@ -33,12 +33,22 @@ namespace GS_SPAv {
     private void DataParams_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {
       if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add) {
         foreach (DataParam dataParam in DataParams) {
-            dataParam.OnChangeValue -= Param_OnChangeValue;
-            dataParam.OnChangeValue += Param_OnChangeValue;
+          dataParam.OnChangeValue -= Param_OnChangeValue;
+          dataParam.OnChangeTitle -= DataParam_OnChangeTitle;
+          dataParam.OnChangeValue += Param_OnChangeValue;
+          dataParam.OnChangeTitle += DataParam_OnChangeTitle;
         }
         InitGraph();
         // InitGraphSetting();
       }
+    }
+
+    private void DataParam_OnChangeTitle(DataParam param) {
+      for(int i=0;i< DataParams.Count; i++) {
+        Model.Series[i].Title = DataParams[i].Title;
+      }
+
+      plotter.InvalidatePlot(false);
     }
 
     public void InitGraph() {
@@ -107,7 +117,7 @@ namespace GS_SPAv {
       plotter.Controller = controller;
 
       plotter.Model = Model;
-      plotter.Model.PlotMargins = new OxyThickness(150,double.NaN, double.NaN, double.NaN);
+      plotter.Model.PlotMargins = new OxyThickness(150, double.NaN, double.NaN, double.NaN);
     }
 
     private void Param_OnChangeValue(DataParam dataParam) {

@@ -20,3 +20,4 @@ c:\Users\GriS\source\repos\GS-SPAv\Core\obj\Debug\Interop.WMPLib.dll
 c:\Users\GriS\source\repos\GS-SPAv\Core\obj\Debug\Core.csproj.ResolveComReference.cache
 c:\Users\GriS\source\repos\GS-SPAv\Core\obj\Debug\Core.Properties.Resources.resources
 c:\Users\GriS\source\repos\GS-SPAv\Core\obj\Debug\Core.csproj.GenerateResource.cache
+C:\Users\GriS\source\repos\GS-SPAv\Core\obj\Debug\Core.csproj.CoreCompileInputs.cache

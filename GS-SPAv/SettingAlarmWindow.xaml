@@ -6,12 +6,13 @@
         xmlns:local="clr-namespace:GS_SPAv"
         mc:Ignorable="d"
         Title="Настройки параметров" 
-        Height="580" Width="700"
+        Height="600" Width="700"
         Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition/>
+      <RowDefinition Height="36"/>
       <RowDefinition Height="36"/>
     </Grid.RowDefinitions>
     <DataGrid 
@@ -97,7 +98,18 @@
           Binding="{Binding Path=IsAlarmSound}"/>
       </DataGrid.Columns>
     </DataGrid>
-    <Grid Grid.Row="1" Grid.Column="2">
+    <Grid Grid.Row="1">
+      <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+        <Label Content="Расчет концентрации по расходу от"/>
+        <ComboBox Grid.Column="2" 
+                  x:Name="cbSelectFlow" 
+                  VerticalContentAlignment="Center" 
+                  Margin="3" 
+                  Width="170">
+        </ComboBox>
+      </StackPanel>
+    </Grid>
+    <Grid Grid.Row="2" Grid.Column="2">
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
         <Button x:Name="btnOk" Content="Применить" Margin="5 0" Padding="10 0" Click="Apply_Click"/>
         <Button Content="Закрыть" Margin="5 0" Padding="10 0" Click="Cancel_Click"/>

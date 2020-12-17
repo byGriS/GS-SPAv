@@ -7,3 +7,4 @@ c:\Users\GriS\source\repos\GS-SPAv\GS-SPAv\bin\Debug\Updater.exe.config
 c:\Users\GriS\source\repos\GS-SPAv\GS-SPAv\bin\Debug\Updater.exe
 c:\Users\GriS\source\repos\GS-SPAv\GS-SPAv\bin\Debug\Updater.pdb
 C:\Users\GriS\source\repos\GS-SPAv\Updater\obj\Debug\Updater.csprojAssemblyReference.cache
+c:\Users\GriS\source\repos\GS-SPAv\Updater\obj\Debug\Updater.csproj.CoreCompileInputs.cache

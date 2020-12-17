@@ -52,8 +52,14 @@ namespace Service {
     private float capacity2 = 0;
     public float Capacity2 { get { return capacity2; } set { capacity2 = value; OnPropertyChanged("Capacity2"); } }
 
+    private float maxPress = 0;
+    public float MaxPress { get { return maxPress; } set { maxPress = value;OnPropertyChanged("MaxPress"); } }
 
+    private string start= "";
+    public string Start { get { return start; } set { start = value; OnPropertyChanged("Start"); } }
 
+    private string end = "";
+    public string End { get { return end; } set { end = value; OnPropertyChanged("End"); } }
 
     public Stage Clone() {
       return new Stage {
@@ -65,7 +71,10 @@ namespace Service {
         Capacity1Start = this.Capacity1Start,
         Capacity1End = this.Capacity1End,
         Capacity2Start = this.Capacity2Start,
-        Capacity2End = this.Capacity2End
+        Capacity2End = this.Capacity2End,
+        MaxPress = this.MaxPress,
+        Start = this.Start,
+        End = this.End,
       };
     }
   }

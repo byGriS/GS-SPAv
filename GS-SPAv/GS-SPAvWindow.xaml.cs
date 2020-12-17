@@ -81,7 +81,16 @@ namespace GS_SPAv {
     }
 
     private void InitTableDataParams() {
-      tableDataParams.ListDataParams = Core.Setting.ListDataParams;
+      //tableDataParams.ListDataParams = Core.Setting.ListDataParams;
+      tableDataParams.ListDataParams.Clear();
+      for (int i = 0; i < 9; i++) {
+        tableDataParams.ListDataParams.Add(Core.Setting.ListDataParams[i]);
+      }
+      tableDataParams4.ListDataParams.Clear();
+      for (int i = 9; i < Core.Setting.ListDataParams.Count; i++) {
+        tableDataParams4.ListDataParams.Add(Core.Setting.ListDataParams[i]);
+      }
+
       tableDataParams2.ListDataParams.Clear();
       for (int i = 0; i < 9; i++) {
         tableDataParams2.ListDataParams.Add(Core.Setting.ListDataParams[i]);
@@ -123,6 +132,9 @@ namespace GS_SPAv {
 
         Core.Setting.ListStages[Core.Setting.ListStages.Count - 1].Capacity1Start = Core.Setting.GetParamByTitleSmall("V1").LastValue.Value;
         Core.Setting.ListStages[Core.Setting.ListStages.Count - 1].Capacity2Start = Core.Setting.GetParamByTitleSmall("V2").LastValue.Value;
+        Core.Setting.ListStages[Core.Setting.ListStages.Count - 1].Start = DateTime.Now.ToString("HH:mm dd/MM/yy");
+        if (Core.Setting.ListStages.Count>1)
+          Core.Setting.ListStages[Core.Setting.ListStages.Count - 2].End = DateTime.Now.ToString("HH:mm dd/MM/yy");
       }
     }
 
@@ -150,6 +162,9 @@ namespace GS_SPAv {
         WorkChangeState("CUDR", 2, "Не запущен");
         WorkChangeState("Web", 2, "Не запущен");
         InitTableDataParams();
+
+        if (Core.Setting.ListStages.Count > 0)
+          Core.Setting.ListStages[Core.Setting.ListStages.Count - 1].End = DateTime.Now.ToString("HH:mm dd/MM/yy");
       }
     }
 
